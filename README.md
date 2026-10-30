@@ -23,13 +23,17 @@ Các trang được điều hướng bằng tham số `page` trên `index.html`:
 | Chi tiết sản phẩm | `index.html?page=product&id=p-iphone-15` |
 | Giỏ hàng | `index.html?page=cart` |
 | Đặt hàng | `index.html?page=checkout` |
+| Tra cứu đơn hàng | `index.html?page=track` |
+| Quy chế website | `index.html?page=policy&section=general` |
+| Điều khoản sử dụng | `index.html?page=policy&section=terms` |
+| Hợp đồng điện tử | `index.html?page=contract&id=<mã-đơn>` |
 | Tin tức | `index.html?page=news` |
 | Chi tiết bài viết | `index.html?page=article&id=n-ai-phone` |
 | Liên hệ | `index.html?page=contact` |
 
 Website cũng có thể truy cập các trang qua menu trên header/footer. Tìm kiếm sản phẩm hỗ trợ tên, mã và mô tả; danh sách sản phẩm hỗ trợ lọc danh mục, mức giá, sắp xếp giá và sản phẩm mới.
 
-Trang chủ có danh mục điện thoại, máy tính bảng, laptop, tivi, tủ lạnh, đồng hồ thông minh, loa, phụ kiện và đồ gia dụng. Danh mục dẫn tới danh sách đã lọc; dữ liệu mẫu gồm nhiều sản phẩm ở các nhóm này. Khi cập nhật bản demo, các danh mục và sản phẩm mẫu mới được bổ sung vào dữ liệu `localStorage` hiện có một lần, không ghi đè sản phẩm hoặc danh mục do người dùng tự tạo.
+Trang chủ có năm danh mục: điện thoại, máy tính bảng, laptop, đồng hồ thông minh và phụ kiện (bao gồm tai nghe, loa). Danh mục dẫn tới danh sách đã lọc; dữ liệu mẫu gồm nhiều sản phẩm ở các nhóm này. Khi cập nhật bản demo, các danh mục và sản phẩm mẫu mới được bổ sung mà không ghi đè dữ liệu do người dùng tự tạo; các nhóm tivi, tủ lạnh và đồ gia dụng đã ngừng sử dụng được gỡ khỏi dữ liệu mẫu.
 
 ## Dữ liệu cửa hàng
 
@@ -40,11 +44,14 @@ Website chỉ chạy frontend và lưu dữ liệu trên máy khách, vì vậy 
 ## Luồng mua hàng và dữ liệu
 
 1. Thêm sản phẩm vào giỏ, chỉnh số lượng hoặc xóa sản phẩm.
-2. Điền thông tin giao hàng hợp lệ tại trang đặt hàng.
-3. Chọn COD hoặc chuyển khoản mô phỏng và xác nhận.
-4. Trang kết quả hiển thị mã đơn; đơn hàng được lưu trong `localStorage` của trình duyệt.
+2. Tại trang đặt hàng, chọn nhận tại cửa hàng hoặc giao tận nơi; điền địa chỉ tương ứng.
+3. Có thể yêu cầu hóa đơn công ty với mã số thuế hợp lệ. Chỉ có hai hình thức thanh toán: thanh toán khi nhận hàng (tại cửa hàng hoặc COD khi giao tận nơi) và chuyển khoản QR. Hóa đơn công ty không áp dụng thanh toán khi nhận hàng; đơn trên 5.000.000đ chỉ có lựa chọn chuyển khoản QR mô phỏng.
+4. Chọn phương thức thanh toán phù hợp rồi xác nhận. Ảnh QR tại `assets/images/vietqr.png` chỉ dùng minh họa, website không xử lý thanh toán thật.
+5. Tra cứu bằng mã đơn và số điện thoại, hoặc mở danh sách đơn gần đây được lưu trên trình duyệt này. Đơn ở trạng thái “Đang xác nhận” có thể gửi yêu cầu hủy kèm lý do; hợp đồng điện tử vẫn xem được từ trang tra cứu hoặc kết quả đặt hàng.
 
 Giỏ hàng, đơn hàng, sản phẩm, danh mục, bài viết, nội dung giới thiệu và tin nhắn liên hệ được lưu bằng `localStorage`. Dữ liệu chỉ dùng chung trong cùng trình duyệt và origin của Live Server, không đồng bộ giữa thiết bị/trình duyệt. Xóa dữ liệu trang web sẽ xóa dữ liệu demo. Hình ảnh sản phẩm mẫu tải từ Unsplash; nếu ảnh ngoài không tải được, trang dùng ảnh dự phòng cục bộ tại `assets/images/product-placeholder.svg`.
+
+Đơn hàng mới lưu thêm lựa chọn nhận hàng tại `order.delivery` và thông tin hóa đơn tại `order.invoice`. Các đơn cũ vẫn được giữ nguyên; trạng thái “Mới đặt” được hiển thị như “Đang xác nhận”, và phương thức thanh toán cũ `cod`/`bank` vẫn được diễn giải tương ứng.
 
 ## Ghi chú
 
